@@ -21,7 +21,6 @@ export const getAllLists = async () => {
   let result = await promise
   return result
 }
-
 export const getList = async ({ list_id }) => {
   let promise = new Promise((resolve, reject) => {
     listModel.findOne({ _id: list_id }, (err, list) => {

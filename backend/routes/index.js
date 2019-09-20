@@ -1,18 +1,33 @@
 var express = require('express')
+import { createList, getAllLists } from '../controllers/listController'
 var router = express.Router()
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'JONAS' })
 })
-router.get('/list', function(req, res, next) {
-  res.json({ title: 'LIST' })
+router.get('/lists', function(req, res, next) {
+  getAllLists()
+    .then(lists => {
+      return res.json({ status: 'OK', lists })
+    })
+    .catch(err => {
+      return res.json({ status: 'ERROR', message: err.message })
+    })
 })
-router.post('/newlist', function(req, res, next) {
-  res.json({ title: 'LIST' })
+
+router.post('/list', function(req, res, next) {
+  const { listName } = req.body
+  createList({ name: listName })
+    .then(list => {
+      return res.json({ status: 'OK', list })
+    })
+    .catch(err => {
+      return res.json({ status: 'ERROR', message: err.message })
+    })
 })
-router.put('/newlistitem', function(req, res, next) {
+
+router.put('/listitem', function(req, res, next) {
   res.json({ title: 'LIST' })
 })
 
-module.exports = router
+export default router

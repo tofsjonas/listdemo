@@ -16,6 +16,20 @@ mongoose.connect('mongodb://localhost:27017/listdemo')
 
 var app = express()
 
+const allowedOrigins = ['http://localhost:3000', 'http://earendel.se/listdemo']
+
+app.use(function(req, res, next) {
+  var origin = req.headers.origin
+  if (allowedOrigins.indexOf(origin) > -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.header('Access-Control-Allow-Credentials', true)
+
+  return next()
+})
+
 // view engine setup
 app.set('views', join(__dirname, 'views'))
 app.set('view engine', 'pug')
