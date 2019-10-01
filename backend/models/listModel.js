@@ -4,7 +4,7 @@ import { Schema, model } from 'mongoose'
 // https://docs.mongodb.com/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/
 const listItemSchema = new Schema(
   {
-    name: { type: String, required: true },
+    title: { type: String, required: true, default: '[list item]' },
     done: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
@@ -12,10 +12,13 @@ const listItemSchema = new Schema(
 
 const listSchema = new Schema(
   {
-    name: { type: String, required: true },
+    title: { type: String, required: true, default: '[list title]' },
     items: [listItemSchema],
   },
   { timestamps: true }
 )
-const List = model('List', listSchema)
-export default List
+
+export const ListItemModel = model('ListItem', listItemSchema)
+
+export const ListModel = model('List', listSchema)
+// export default List

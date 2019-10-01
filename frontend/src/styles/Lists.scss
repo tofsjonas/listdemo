@@ -1,7 +1,58 @@
+.add-list-item {
+  margin-top: 1em;
+}
+.list-title-input {
+  min-width: 90%;
+}
+.list-modal {
+  &.icon-trash-empty {
+    position: absolute;
+    right: 0.3em;
+    top: 0.3em;
+    // float: right;
+  }
+}
+
 .lists {
   padding: 0.2em;
-  .list-row {
-    margin-top: 0.2em;
-    background: red;
+
+  .list {
+    margin: 0.2em;
+    border: 2px solid $list-border-color;
+    width: 12em;
+    float: left;
+    border-radius: 0.2em;
+    color: $list-color;
+    background: $list-bg;
+    // &.active {
+    //   background: red;
+    // }
+    * {
+      font-size: 0.8em;
+      text-align: left;
+    }
+
+    h2 {
+      padding: 0.2em;
+      margin: 0.2em;
+      text-align: left;
+    }
+    header {
+      // background: $list-header-bg;
+    }
+    main {
+      min-height: 2em;
+    }
+    footer {
+      text-align: right;
+      // background: $list-footer-bg;
+      // background: red;
+    }
   }
+  // .icon-pencil {
+  //   float: right;
+  // }
+  // .icon-trash-empty {
+  //   float: left;
+  // }
 }

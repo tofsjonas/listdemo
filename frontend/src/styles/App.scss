@@ -13,13 +13,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.App {
+.app {
   text-align: center;
   background-color: #374258;
   min-height: 100vh;
 }
 
-.App-header {
+.app-header {
   background-color: #282c34;
   min-height: 4em;
   display: flex;
@@ -29,7 +29,7 @@ code {
   font-size: calc(10px + 2vmin);
   color: white;
 }
-.App-footer {
+.app-footer {
   min-height: 2em;
   background-color: #282c34;
   position: absolute;
@@ -56,22 +56,6 @@ $button-background: rgb(146, 146, 146);
   }
 }
 
-input {
-  background: rgb(207, 207, 207);
-  border: 0.1em solid silver;
-  height: 2em;
-  // padding: 0.4em 1em;
-  padding: 0.4em 1em 0.4em 0.4em;
-  border-radius: 0.4em;
-  margin: 0;
-  &[type='submit'] {
-    padding: 0.4em 1em;
-    color: $button-foreground;
-    background: $button-background;
-    line-height: 0.9em;
-    border-color: $button-foreground;
-  }
-}
 // button {
 //   color: $button-foreground;
 //   background: $button-background;

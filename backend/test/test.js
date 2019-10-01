@@ -4,7 +4,7 @@ import chai from 'chai'
 // var chai = require('chai')
 var chaiAsPromised = require('chai-as-promised')
 import mongoose from 'mongoose'
-import { deleteList, createList, addListItem, toggleListItem, updateListItemName, updateListName, getAllLists, deleteListItem } from '../controllers/ListController'
+import { deleteList, createList, addListItem, toggleListItem, updateListItemtitle, updateListtitle, getAllLists, deleteListItem } from '../controllers/ListController'
 
 // mongoose.connection.collections['sheet'].drop(function(err) {
 //   console.log('collection dropped')
@@ -40,11 +40,11 @@ describe('Database', function() {
   var testList = null
   var testItem = null
   describe('createList', function() {
-    it('should create a list with name "testlist"', function(done) {
-      createList({ name: 'testlist' })
+    it('should create a list with title "[list title]"', function(done) {
+      createList()
         .then(list => {
           testList = list
-          assert.equal(list.name, 'testlist')
+          assert.equal(list.title, ['[list title]'])
           done()
         })
         .catch(err => {
@@ -65,11 +65,12 @@ describe('Database', function() {
     })
   })
   describe('addListItem', function() {
-    it('should add an item to "testlist" with the name "bake a cake"', function(done) {
-      addListItem({ list_id: testList._id, data: { name: 'bake a cake' } })
+    console.log('SPACETAG: test.js', testList)
+    it('should add an item to "testlist" with the title "[list item]"', function(done) {
+      addListItem({ list_id: testList._id })
         .then(item => {
           testItem = item
-          assert.equal(item.name, 'bake a cake')
+          assert.equal(item.title, '[list item]')
           done()
         })
         .catch(err => {
@@ -77,11 +78,11 @@ describe('Database', function() {
         })
     })
   })
-  describe('updateListName', () => {
-    it('should update name of "testlist" to "Nirvana songs"', done => {
-      updateListName({ list_id: testList._id, name: 'Nirvana songs' })
+  describe('updateListtitle', () => {
+    it('should update title of "testlist" to "Nirvana songs"', done => {
+      updateListtitle({ list_id: testList._id, title: 'Nirvana songs' })
         .then(list => {
-          assert.equal(list.name, 'Nirvana songs')
+          assert.equal(list.title, 'Nirvana songs')
           done()
         })
         .catch(err => {
@@ -89,11 +90,11 @@ describe('Database', function() {
         })
     })
   })
-  describe('updateListItemName', () => {
+  describe('updateListItemtitle', () => {
     it('should set "bake a cake" in "Nirvana Songs" to "Come as you are"', done => {
-      updateListItemName({ list_id: testList._id, item_id: testItem._id, name: 'Come as you are' })
+      updateListItemtitle({ list_id: testList._id, item_id: testItem._id, title: 'Come as you are' })
         .then(item => {
-          assert.equal(item.name, 'Come as you are')
+          assert.equal(item.title, 'Come as you are')
           done()
         })
         .catch(err => {

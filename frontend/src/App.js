@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ListContextProvider from './contexts/ListContext'
 import Main from './components/Main'
+import Modal from 'react-modal'
 
 function App() {
+  useEffect(() => {
+    Modal.setAppElement('.app')
+  }, [])
+
   return (
     <ListContextProvider>
-      <div className="App">
-        <header className="App-header">
+      <div className="app">
+        <header className="app-header">
           <p>a simple todo list demo</p>
         </header>
         <Main />
-        <footer className="App-footer">
+        <footer className="app-footer">
           <p>footer</p>
         </footer>
       </div>

@@ -1,8 +1,8 @@
-import listModel from '../models/listModel'
+import { ListModel, ListItemModel } from '../models/ListModel'
 
-export const createList = async ({ name }) => {
+export const createList = async () => {
   let promise = new Promise((resolve, reject) => {
-    var list = new listModel({ name })
+    var list = new ListModel()
     list.save((err, list) => {
       if (err) reject(err)
       resolve(list)
@@ -13,7 +13,7 @@ export const createList = async ({ name }) => {
 }
 export const getAllLists = async () => {
   let promise = new Promise((resolve, reject) => {
-    listModel.find((err, list) => {
+    ListModel.find((err, list) => {
       if (err) reject(err)
       resolve(list)
     })
@@ -23,7 +23,7 @@ export const getAllLists = async () => {
 }
 export const getList = async ({ list_id }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findOne({ _id: list_id }, (err, list) => {
+    ListModel.findOne({ _id: list_id }, (err, list) => {
       if (err) reject(err)
       resolve(list)
     })
@@ -31,9 +31,9 @@ export const getList = async ({ list_id }) => {
   let result = await promise
   return result
 }
-export const updateListName = async ({ list_id, name }) => {
+export const updateListtitle = async ({ list_id, title }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findOneAndUpdate({ _id: list_id }, { name }, { new: true }, (err, list) => {
+    ListModel.findOneAndUpdate({ _id: list_id }, { title }, { new: true }, (err, list) => {
       if (err) reject(err)
       resolve(list)
     })
@@ -43,7 +43,7 @@ export const updateListName = async ({ list_id, name }) => {
 }
 export const deleteList = async ({ list_id }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findByIdAndDelete(list_id, (err, list) => {
+    ListModel.findByIdAndDelete(list_id, (err, list) => {
       if (err) reject(err)
       resolve('DELETE LIST OK')
     })
@@ -51,11 +51,11 @@ export const deleteList = async ({ list_id }) => {
   let result = await promise
   return result
 }
-export const addListItem = async ({ list_id, data }) => {
+export const addListItem = async ({ list_id }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findById(list_id, (err, list) => {
+    ListModel.findById(list_id, (err, list) => {
       if (err) reject(err)
-      list.items.push(data)
+      list.items.push(new ListItemModel())
       list.save((err, list) => {
         if (err) reject(err)
         const items = list.items
@@ -66,9 +66,9 @@ export const addListItem = async ({ list_id, data }) => {
   let result = await promise
   return result
 }
-export const updateListItemName = async ({ list_id, item_id, name }) => {
+export const updateListItemtitle = async ({ list_id, item_id, title }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findOneAndUpdate({ _id: list_id, 'items._id': item_id }, { 'items.$.name': name }, { new: true }, (err, list) => {
+    ListModel.findOneAndUpdate({ _id: list_id, 'items._id': item_id }, { 'items.$.title': title }, { new: true }, (err, list) => {
       if (err) reject(err)
       const item = list.items.id(item_id)
       resolve(item)
@@ -79,7 +79,7 @@ export const updateListItemName = async ({ list_id, item_id, name }) => {
 }
 export const toggleListItem = async ({ list_id, item_id }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findOne({ _id: list_id }, (err, list) => {
+    ListModel.findOne({ _id: list_id }, (err, list) => {
       if (err) reject(err)
       const newVal = !list.items.id(item_id).done
       list.items.id(item_id).done = !list.items.id(item_id).done
@@ -88,7 +88,7 @@ export const toggleListItem = async ({ list_id, item_id }) => {
     })
 
     // just cant get xor to work
-    // listModel.findOneAndUpdate(
+    // ListModel.findOneAndUpdate(
     //   { _id: list_id, 'items._id': item_id },
     //   {
     //     $bit: {
@@ -102,7 +102,7 @@ export const toggleListItem = async ({ list_id, item_id }) => {
 }
 export const deleteListItem = async ({ list_id, item_id }) => {
   let promise = new Promise((resolve, reject) => {
-    listModel.findOneAndUpdate({ _id: list_id }, { $pull: { items: { _id: item_id } } }, (err, res) => {
+    ListModel.findOneAndUpdate({ _id: list_id }, { $pull: { items: { _id: item_id } } }, (err, res) => {
       if (err) reject(err)
       resolve('DELETE LIST ITEM OK')
     })
