@@ -50,7 +50,7 @@ const Main = () => {
   }
 
   return (
-    <main className="app-main">
+    <>
       <form onSubmit={handleSubmit} className="create-list-form">
         <input type="text" required name="title" value={listTitle} placeholder="skapa en lista" onChange={handleChange} />
         <input type="submit" value="lägg till" />
@@ -60,7 +60,7 @@ const Main = () => {
         <div className="notification">
           <div className="center">
             <p>det finns inga listor :(</p>
-            <p>men du kan skapa en!</p>
+            <p>men du kan skapa en! :)</p>
           </div>
         </div>
       )}
@@ -71,7 +71,7 @@ const Main = () => {
           ))}
         </div>
       )}
-    </main>
+    </>
   )
 }
 export default Main

@@ -1,5 +1,5 @@
 var express = require('express')
-import { createList, getAllLists, addListItem } from '../controllers/listController'
+import { createList, getAllLists, addListItem, deleteListItem, updateListItem, updateList } from '../controllers/listController'
 var router = express.Router()
 
 router.get('/', function(req, res, next) {
@@ -25,10 +25,35 @@ router.post('/list', function(req, res, next) {
       return res.json({ status: 'ERROR', message: err.message })
     })
 })
-router.post('/list', function(req, res, next) {
-  const { listTitle } = req.body
-  createList({ title: listTitle })
+// router.post('/list', function(req, res, next) {
+//   const { listTitle } = req.body
+//   createList({ title: listTitle })
+//     .then(list => {
+//       return res.json({ status: 'OK', list })
+//     })
+//     .catch(err => {
+//       return res.json({ status: 'ERROR', message: err.message })
+//     })
+// })
+
+router.put('/additem/:list_id', function(req, res, next) {
+  const { list_id } = req.params
+  addListItem({ list_id })
+    .then(item => {
+      console.log('SPACETAG: index.js', item)
+      return res.json({ status: 'OK', item })
+    })
+    .catch(err => {
+      return res.json({ status: 'ERROR', message: err.message })
+    })
+})
+router.put('/updatelist/:list_id', function(req, res, next) {
+  const { list_id } = req.params
+  const data = req.body
+  // console.log('SPACETAG: index.js', list_id, req.body)
+  updateList({ list_id, data })
     .then(list => {
+      // console.log('SPACETAG: index.js', list)
       return res.json({ status: 'OK', list })
     })
     .catch(err => {
@@ -36,14 +61,24 @@ router.post('/list', function(req, res, next) {
     })
 })
 
-router.put('/additem/:list_id', function(req, res, next) {
+router.put('/updateitem/:list_id:item_id', function(req, res, next) {
   const { list_id } = req.params
-
-  console.log('SPACETAG: index.js', list_id)
-  addListItem({ list_id })
+  const { data } = req.body
+  updateListItem({ data })
     .then(item => {
       console.log('SPACETAG: index.js', item)
       return res.json({ status: 'OK', item })
+    })
+    .catch(err => {
+      return res.json({ status: 'ERROR', message: err.message })
+    })
+})
+router.delete('/deleteitem/:list_id/:item_id', function(req, res, next) {
+  const { list_id, item_id } = req.params
+
+  deleteListItem({ list_id, item_id })
+    .then(() => {
+      return res.json({ status: 'OK' })
     })
     .catch(err => {
       return res.json({ status: 'ERROR', message: err.message })

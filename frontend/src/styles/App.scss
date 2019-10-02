@@ -17,23 +17,26 @@ code {
   text-align: center;
   background-color: #374258;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  // flex-flow: column nowrap;
+  // justify-content: stretch;
+  // align-items: stretch;
+  // align-content: stretch;
 }
 
 .app-header {
   background-color: #282c34;
-  min-height: 4em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  // font-size: calc(10px + 2vmin);
   color: white;
+  width: 100%;
+}
+.app-main {
+  flex: 1;
 }
 .app-footer {
-  min-height: 2em;
   background-color: #282c34;
-  position: absolute;
-  bottom: 0;
   width: 100%;
 }
 

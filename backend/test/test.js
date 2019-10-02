@@ -4,7 +4,7 @@ import chai from 'chai'
 // var chai = require('chai')
 var chaiAsPromised = require('chai-as-promised')
 import mongoose from 'mongoose'
-import { deleteList, createList, addListItem, toggleListItem, updateListItemtitle, updateListtitle, getAllLists, deleteListItem } from '../controllers/ListController'
+import { deleteList, createList, addListItem, updateListItem, updateList, getAllLists, deleteListItem } from '../controllers/ListController'
 
 // mongoose.connection.collections['sheet'].drop(function(err) {
 //   console.log('collection dropped')
@@ -40,11 +40,11 @@ describe('Database', function() {
   var testList = null
   var testItem = null
   describe('createList', function() {
-    it('should create a list with title "[list title]"', function(done) {
+    it('should create a list with title "lista 1"', function(done) {
       createList()
         .then(list => {
           testList = list
-          assert.equal(list.title, ['[list title]'])
+          assert.equal(list.title, ['lista 1'])
           done()
         })
         .catch(err => {
@@ -65,7 +65,6 @@ describe('Database', function() {
     })
   })
   describe('addListItem', function() {
-    console.log('SPACETAG: test.js', testList)
     it('should add an item to "testlist" with the title "[list item]"', function(done) {
       addListItem({ list_id: testList._id })
         .then(item => {
@@ -78,9 +77,9 @@ describe('Database', function() {
         })
     })
   })
-  describe('updateListtitle', () => {
+  describe('updateList', () => {
     it('should update title of "testlist" to "Nirvana songs"', done => {
-      updateListtitle({ list_id: testList._id, title: 'Nirvana songs' })
+      updateList({ list_id: testList._id, data: { title: 'Nirvana songs' } })
         .then(list => {
           assert.equal(list.title, 'Nirvana songs')
           done()
@@ -90,21 +89,19 @@ describe('Database', function() {
         })
     })
   })
-  describe('updateListItemtitle', () => {
-    it('should set "bake a cake" in "Nirvana Songs" to "Come as you are"', done => {
-      updateListItemtitle({ list_id: testList._id, item_id: testItem._id, title: 'Come as you are' })
+  describe('updateListItem', () => {
+    it('should set "Come as you are" in "Nirvana Songs" to "Smells like teen spirit"', done => {
+      updateListItem({ list_id: testList._id, item_id: testItem._id, data: { title: 'Smells like teen spirit' } })
         .then(item => {
-          assert.equal(item.title, 'Come as you are')
+          assert.equal(item.title, 'Smells like teen spirit')
           done()
         })
         .catch(err => {
           done(err)
         })
     })
-  })
-  describe('toggleListItem', function() {
-    it('should set "done" in "Come as you are" in "Nirvana Songs" to true', function(done) {
-      toggleListItem({ list_id: testList._id, item_id: testItem._id })
+    it('should set "Smells like teen spirit" in "Nirvana Songs" done to true', done => {
+      updateListItem({ list_id: testList._id, item_id: testItem._id, data: { done: true } })
         .then(item => {
           assert.equal(item.done, true)
           done()

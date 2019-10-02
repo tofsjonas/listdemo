@@ -14,7 +14,9 @@ function App() {
         <header className="app-header">
           <p>a simple todo list demo</p>
         </header>
-        <Main />
+        <main className="app-main">
+          <Main />
+        </main>
         <footer className="app-footer">
           <p>footer</p>
         </footer>
