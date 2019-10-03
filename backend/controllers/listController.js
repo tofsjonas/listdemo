@@ -69,7 +69,8 @@ export const addListItem = async ({ list_id }) => {
   let promise = new Promise((resolve, reject) => {
     ListModel.findById(list_id, (err, list) => {
       if (err) reject(err)
-      list.items.push(new ListItemModel())
+      // TODO use mongoose function to set title?
+      list.items.push(new ListItemModel({ title: 'todo ' + (list.items.length + 1) }))
       list.save((err, list) => {
         if (err) reject(err)
         const items = list.items
@@ -85,9 +86,11 @@ export const updateListItem = async ({ list_id, item_id, data }) => {
     ListModel.findOne({ _id: list_id }, (err, list) => {
       if (err) reject(err)
       for (const i in data) {
+        // console.log('SPACETAG: listController.js', i, data[i])
         list.items.id(item_id)[i] = data[i]
       }
       list.save()
+      // console.log('SPACETAG: listController.js', list.items.id(item_id))
       resolve(list.items.id(item_id))
     })
   })

@@ -48,11 +48,23 @@ export const listReducer = (state, action) => {
         ...state,
       }
     case 'UPDATE_LIST_ITEM':
+      var { listId, item } = action.payload
+      state.lists.map(mlist => {
+        if (mlist._id === listId) {
+          mlist.items = mlist.items.map(mitem => {
+            if (mitem._id === item._id) {
+              return item
+            }
+            return mitem
+          })
+        }
+        return mlist
+      })
       return {
         ...state,
       }
     case 'DELETE_LIST_ITEM':
-      const { listId, itemId } = action.payload
+      var { listId, itemId } = action.payload
       state.lists.map(mlist => {
         if (mlist._id === listId) {
           mlist.items = mlist.items.filter(item => {

@@ -40,7 +40,6 @@ router.put('/additem/:list_id', function(req, res, next) {
   const { list_id } = req.params
   addListItem({ list_id })
     .then(item => {
-      console.log('SPACETAG: index.js', item)
       return res.json({ status: 'OK', item })
     })
     .catch(err => {
@@ -61,12 +60,11 @@ router.put('/updatelist/:list_id', function(req, res, next) {
     })
 })
 
-router.put('/updateitem/:list_id:item_id', function(req, res, next) {
-  const { list_id } = req.params
+router.put('/updateitem/:list_id/:item_id', function(req, res, next) {
+  const { list_id, item_id } = req.params
   const { data } = req.body
-  updateListItem({ data })
+  updateListItem({ list_id, item_id, data })
     .then(item => {
-      console.log('SPACETAG: index.js', item)
       return res.json({ status: 'OK', item })
     })
     .catch(err => {

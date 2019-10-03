@@ -1,21 +1,39 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import { ListContext } from '../contexts/ListContext'
 
 const ListItem = ({ listId, item }) => {
   const { dispatch, serverUrl } = useContext(ListContext)
+  const [title, setTitle] = useState('')
+  const [done, setDone] = useState(false)
 
-  const [title, setTitle] = useState(item.title)
-  const [done, setDone] = useState(item.done)
-  // console.log('SPACETAG: ListItem.js', listId, item)
+  useEffect(() => {
+    setDone(item.done)
+    setTitle(item.title)
+  }, [item])
   const handleChange = e => {
     setTitle(e.target.value)
   }
   const toggleDone = () => {
-    setDone(!done)
+    save({ done: !done })
   }
   const selectInput = e => {
     e.target.select()
+  }
+  const save = data => {
+    axios
+      .put(serverUrl + '/updateitem/' + listId + '/' + item._id, { data }, { crossdomain: true })
+      .then(function(response) {
+        const { status, item, message } = response.data
+        if (status === 'OK') {
+          dispatch({ type: 'UPDATE_LIST_ITEM', payload: { listId, item } })
+        } else {
+          alert(message)
+        }
+      })
+      .catch(function(error) {
+        alert(error.message)
+      })
   }
 
   const deleteItem = () => {
@@ -41,7 +59,7 @@ const ListItem = ({ listId, item }) => {
   const saveTitle = () => {
     const newTitle = title.trim()
     if (newTitle !== item.title) {
-      console.log('SPACETAG: ListItem.js SAVING', title)
+      save({ title: newTitle })
     }
   }
 
