@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import ListContextProvider, { ListContext } from '../contexts/ListContext'
 import Modal from 'react-modal'
 import axios from 'axios'
@@ -7,8 +7,13 @@ import ListItem from './ListItem'
 
 const List = ({ list }) => {
   const { dispatch, serverUrl } = useContext(ListContext)
-  const [title, setTitle] = useState(list.title)
+  const [title, setTitle] = useState('')
   const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    setTitle(list.title)
+  }, [list])
+
   const handleChange = e => {
     setTitle(e.target.value)
   }
@@ -34,8 +39,20 @@ const List = ({ list }) => {
     }
   }
   const deleteList = () => {
-    if (window.confirm('Are you sure?')) {
-      console.log('SPACETAG: List.js DELETING LIST', title)
+    if (window.confirm('Are you sure you wish to delete this list?')) {
+      axios
+        .delete(serverUrl + '/deletelist/' + list._id, { crossdomain: true })
+        .then(function(response) {
+          const { status, message } = response.data
+          if (status === 'OK') {
+            dispatch({ type: 'DELETE_LIST', payload: { list } })
+          } else {
+            alert(message)
+          }
+        })
+        .catch(function(error) {
+          alert(error.message)
+        })
     }
   }
   const addItem = () => {
@@ -80,7 +97,13 @@ const List = ({ list }) => {
       </div>
       <Modal isOpen={isActive} onRequestClose={toggleActive} className="modal" overlayClassName="overlay">
         <input className="list-title-input" type="text" value={title} onChange={handleChange} onBlur={saveTitle} onFocus={selectInput} />
-        {list.items.length > 0 && list.items.map(item => <ListItem key={item._id} listId={list._id} item={item} />)}
+        {list.items.length > 0 && (
+          <div className="list-items">
+            {list.items.map(item => (
+              <ListItem key={item._id} listId={list._id} item={item} />
+            ))}
+          </div>
+        )}
         <div className="add-list-item" onClick={addItem}>
           <i className="icon-plus" />
         </div>

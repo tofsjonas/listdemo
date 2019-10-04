@@ -1,5 +1,5 @@
 var express = require('express')
-import { createList, getAllLists, addListItem, deleteListItem, updateListItem, updateList } from '../controllers/listController'
+import { createList, getAllLists, addListItem, deleteListItem, updateListItem, updateList, deleteList } from '../controllers/listController'
 var router = express.Router()
 
 router.get('/', function(req, res, next) {
@@ -25,16 +25,6 @@ router.post('/list', function(req, res, next) {
       return res.json({ status: 'ERROR', message: err.message })
     })
 })
-// router.post('/list', function(req, res, next) {
-//   const { listTitle } = req.body
-//   createList({ title: listTitle })
-//     .then(list => {
-//       return res.json({ status: 'OK', list })
-//     })
-//     .catch(err => {
-//       return res.json({ status: 'ERROR', message: err.message })
-//     })
-// })
 
 router.put('/additem/:list_id', function(req, res, next) {
   const { list_id } = req.params
@@ -49,10 +39,8 @@ router.put('/additem/:list_id', function(req, res, next) {
 router.put('/updatelist/:list_id', function(req, res, next) {
   const { list_id } = req.params
   const data = req.body
-  // console.log('SPACETAG: index.js', list_id, req.body)
   updateList({ list_id, data })
     .then(list => {
-      // console.log('SPACETAG: index.js', list)
       return res.json({ status: 'OK', list })
     })
     .catch(err => {
@@ -83,16 +71,15 @@ router.delete('/deleteitem/:list_id/:item_id', function(req, res, next) {
     })
 })
 
-// //ADD TO LIST
-// router.put('/:_id/:checksum/addtolist/:listName', (req, res) => {
-//   const { _id, checksum, listName } = req.params
-//   addListItem({ _id, checksum, listName })
-//     .then(data => {
-//       return res.json({ status: 'OK', data })
-//     })
-//     .catch(err => {
-//       return res.json({ status: 'ERROR', message: err.message })
-//     })
-// })
+router.delete('/deletelist/:list_id', function(req, res, next) {
+  const { list_id } = req.params
+  deleteList({ list_id })
+    .then(message => {
+      return res.json({ status: 'OK', message })
+    })
+    .catch(err => {
+      return res.json({ status: 'ERROR', message: err.message })
+    })
+})
 
 export default router

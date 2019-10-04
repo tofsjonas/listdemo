@@ -7,61 +7,85 @@ const Main = () => {
   const [listTitle, setListTitle] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
-  const handleChange = e => {
-    setListTitle(e.target.value)
-  }
+  // const handleChange = e => {
+  //   setListTitle(e.target.value)
+  // }
 
   useEffect(() => {
     dispatch({ type: 'FETCH_INIT' })
     axios
       .get(serverUrl + '/lists', { crossdomain: true })
-      .then(function(response) {
+      .then(response => {
         const { status, lists, message } = response.data
         if (status === 'OK') {
           dispatch({ type: 'FETCH_SUCCESS', payload: lists })
           setIsLoading(false)
         } else {
           setIsLoading(false)
+          alert(message)
         }
       })
-      .catch(function(error) {
+      .catch(error => {
         setIsLoading(false)
+        alert(error.message)
         // dispatch({ type: 'FETCH_FAILURE', payload: error.message })
       })
-  }, [])
-
-  const handleSubmit = e => {
-    e.preventDefault()
+  }, [dispatch, serverUrl])
+  const createList = () => {
     axios
-      .post(serverUrl + '/list', { listTitle }, { crossdomain: true })
-      .then(function(response) {
+      .post(serverUrl + '/list', {}, { crossdomain: true })
+      .then(response => {
         const { status, list, message } = response.data
-        console.log('SPACETAG: Main.js', response.data)
         if (status === 'OK') {
           dispatch({ type: 'CREATE_LIST', payload: list })
         } else {
           dispatch({ type: 'CREATE_FAILURE', payload: message })
         }
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch({ type: 'CREATE_FAILURE', payload: error.message })
       })
     setListTitle('')
   }
 
+  // const handleSubmit = e => {
+  //   e.preventDefault()
+  //   axios
+  //     .post(serverUrl + '/list', { listTitle }, { crossdomain: true })
+  //     .then(response => {
+  //       const { status, list, message } = response.data
+  //       if (status === 'OK') {
+  //         dispatch({ type: 'CREATE_LIST', payload: list })
+  //       } else {
+  //         dispatch({ type: 'CREATE_FAILURE', payload: message })
+  //       }
+  //     })
+  //     .catch(error => {
+  //       dispatch({ type: 'CREATE_FAILURE', payload: error.message })
+  //     })
+  //   setListTitle('')
+  // }
+  //      <form onSubmit={handleSubmit} className="create-list-form">
+  //       <input type="text" required name="title" value={listTitle} placeholder="skapa en lista" onChange={handleChange} />
+  //       <input type="submit" value="lägg till" />
+  //     </form>
+
   return (
     <>
-      <form onSubmit={handleSubmit} className="create-list-form">
-        <input type="text" required name="title" value={listTitle} placeholder="skapa en lista" onChange={handleChange} />
-        <input type="submit" value="lägg till" />
-      </form>
+      <div className="list create-list" onClick={createList}>
+        <i className="icon-plus" />
+      </div>
 
-      {lists.length === 0 && (
+      {lists.length === 0 && isLoading && (
         <div className="notification">
-          <div className="center">
-            <p>det finns inga listor :(</p>
-            <p>men du kan skapa en! :)</p>
-          </div>
+          <p>fetching from database...</p>
+        </div>
+      )}
+
+      {lists.length === 0 && !isLoading && (
+        <div className="notification">
+          <p>there are no lists :(</p>
+          <p>but you can create one! :)</p>
         </div>
       )}
       {lists.length > 0 && (

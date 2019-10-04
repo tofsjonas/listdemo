@@ -18,7 +18,11 @@ function App() {
           <Main />
         </main>
         <footer className="app-footer">
-          <p>footer</p>
+          <p>
+            react+node by jonas earendel
+            <br />
+            <a href="https://github.com/tofsjonas/listdemo">github repo</a>
+          </p>
         </footer>
       </div>
     </ListContextProvider>

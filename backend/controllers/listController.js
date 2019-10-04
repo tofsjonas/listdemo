@@ -13,14 +13,20 @@ import { ListModel, ListItemModel } from '../models/ListModel'
 // }
 export const createList = async () => {
   let promise = new Promise((resolve, reject) => {
-    ListModel.countDocuments({}, function(err, count) {
+    var list = new ListModel()
+    list.save((err, list) => {
       if (err) reject(err)
-      var list = new ListModel({ title: 'lista ' + (count + 1) })
-      list.save((err, list) => {
-        if (err) reject(err)
-        resolve(list)
-      })
+      resolve(list)
     })
+
+    // ListModel.countDocuments({}, function(err, count) {
+    //   if (err) reject(err)
+    //   var list = new ListModel({ title: 'lista ' + (count + 1) })
+    //   list.save((err, list) => {
+    //     if (err) reject(err)
+    //     resolve(list)
+    //   })
+    // })
   })
   let result = await promise
   return result
@@ -30,7 +36,7 @@ export const getAllLists = async () => {
     ListModel.find((err, list) => {
       if (err) reject(err)
       resolve(list)
-    })
+    }).sort({ createdAt: 'desc' })
   })
   let result = await promise
   return result
@@ -70,7 +76,9 @@ export const addListItem = async ({ list_id }) => {
     ListModel.findById(list_id, (err, list) => {
       if (err) reject(err)
       // TODO use mongoose function to set title?
-      list.items.push(new ListItemModel({ title: 'todo ' + (list.items.length + 1) }))
+      list.items.push(new ListItemModel())
+      // list.items.unshift(new ListItemModel())
+
       list.save((err, list) => {
         if (err) reject(err)
         const items = list.items

@@ -22,6 +22,7 @@
   left: 50%;
   right: auto;
   min-width: 50vw;
+  min-height: 85vh;
   bottom: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
@@ -30,6 +31,11 @@
   border-radius: 4px;
   outline: none;
   padding: 1.5em;
+  .list-items {
+    max-height: 60vh;
+    overflow: auto;
+  }
+
   input {
     border: 0;
     border-bottom: 1px solid silver;
@@ -61,37 +67,42 @@
 
 .lists {
   padding: 0.2em;
-
-  .list {
-    margin: 0.2em;
-    border: 2px solid $list-border-color;
-    width: 12em;
-    float: left;
-    border-radius: 0.2em;
-    color: $list-color;
-    background: $list-bg;
-    * {
-      font-size: 0.8em;
-      text-align: left;
-    }
-    h2 {
-      padding: 0.2em;
-      margin: 0.2em;
-      text-align: left;
-    }
-    // header {
-    // }
-    main {
-      min-height: 2em;
-    }
-    footer {
-      text-align: right;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start; // so they don't grow
+  // align-content: center;
+  justify-content: center;
+}
+.list {
+  &.create-list {
+    width: 80%;
+    margin: 0.6em auto;
   }
-  // .icon-pencil {
-  //   float: right;
+
+  margin: 0.2em;
+  border: 2px solid $list-border-color;
+  width: 10em;
+  border-radius: 0.2em;
+  color: $list-color;
+  background: $list-bg;
+  * {
+    font-size: 0.8em;
+    text-align: left;
+  }
+  h2 {
+    padding: 0.2em;
+    margin: 0.2em;
+    text-align: left;
+  }
+  // header {
   // }
-  // .icon-trash-empty {
-  //   float: left;
-  // }
+  main {
+    max-height: 5em;
+    min-height: 2em;
+    padding-left: 0.2em;
+    overflow: hidden;
+  }
+  footer {
+    text-align: right;
+  }
 }

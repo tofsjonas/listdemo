@@ -9,21 +9,19 @@
 
 export const listReducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_SUCCESS':
+    case 'FETCH_SUCCESS': {
       return {
         ...state,
         lists: action.payload,
       }
-    // case 'FETCH_FAILURE':
-    //   return {
-    //     ...state,
-    //   }
-    case 'CREATE_LIST':
+    }
+    case 'CREATE_LIST': {
       return {
         ...state,
-        lists: [...state.lists, action.payload],
+        lists: [action.payload, ...state.lists],
       }
-    case 'UPDATE_LIST':
+    }
+    case 'UPDATE_LIST': {
       var { list, item } = action.payload
       // didn't think you could insta-edit
       state.lists.map(mlist => {
@@ -35,9 +33,20 @@ export const listReducer = (state, action) => {
       return {
         ...state,
       }
-    case 'ADD_LIST_ITEM':
+    }
+    case 'DELETE_LIST': {
+      var { list } = action.payload
+      // didn't think you could insta-edit state...
+      state.lists = state.lists.filter(mlist => {
+        return mlist._id !== list._id
+      })
+      return {
+        ...state,
+      }
+    }
+    case 'ADD_LIST_ITEM': {
       var { list, item } = action.payload
-      // didn't think you could insta-edit
+      // didn't think you could insta-edit state
       state.lists.map(mlist => {
         if (mlist._id === list._id) {
           mlist.items.push(item)
@@ -47,7 +56,8 @@ export const listReducer = (state, action) => {
       return {
         ...state,
       }
-    case 'UPDATE_LIST_ITEM':
+    }
+    case 'UPDATE_LIST_ITEM': {
       var { listId, item } = action.payload
       state.lists.map(mlist => {
         if (mlist._id === listId) {
@@ -63,7 +73,8 @@ export const listReducer = (state, action) => {
       return {
         ...state,
       }
-    case 'DELETE_LIST_ITEM':
+    }
+    case 'DELETE_LIST_ITEM': {
       var { listId, itemId } = action.payload
       state.lists.map(mlist => {
         if (mlist._id === listId) {
@@ -78,6 +89,7 @@ export const listReducer = (state, action) => {
       return {
         ...state,
       }
+    }
     default:
       return state
   }
