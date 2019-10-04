@@ -3,8 +3,13 @@ import express, { json, urlencoded } from 'express'
 import { join } from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import fs from 'fs'
+import path from 'path'
+// const fs = require('fs')
+// var path = require('path')
 
-import indexRouter from './routes/index'
+import listRouter from './routes/listRouter'
+import indexRouter from './routes/indexRouter'
 // import usersRouter from './routes/users'
 
 import mongoose from 'mongoose'
@@ -38,13 +43,28 @@ app.use(logger('dev'))
 app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(join(__dirname, 'public')))
+app.use('/todo', listRouter)
 
-app.use('/', indexRouter)
-// app.use('/users', usersRouter)
+// app.use(express.static(join(__dirname, 'public')))
+var absolutePath = path.resolve('../frontend/build')
+
+try {
+  if (fs.existsSync(absolutePath)) {
+    // console.log('SPACETAG: app.js', 'aha!')
+    app.use(express.static(absolutePath))
+    app.get('/*', function(req, res) {
+      res.sendFile(path.join(absolutePath, 'index.html'))
+    })
+  } else {
+    app.use('/', indexRouter)
+  }
+} catch (err) {
+  console.error(err)
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  // console.log('SPACETAG: app.js', 'ERROR')
   next(createError(404))
 })
 
