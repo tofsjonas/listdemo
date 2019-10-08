@@ -28,15 +28,14 @@ code {
 }
 
 .app-header {
-  background-color: #282c34;
-  // font-size: calc(10px + 2vmin);
+  background: url('/startile.jpg');
   width: 100%;
 }
 .app-main {
   flex: 1;
 }
 .app-footer {
-  background-color: #282c34;
+  background: url('/startile.jpg');
   width: 100%;
   color: #bbb;
   a {
