@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/listdemo')
 
 var app = express()
 
-const allowedOrigins = ['http://localhost:3000', 'http://earendel.se/listdemo']
+const allowedOrigins = ['http://localhost:3000', 'http://listdemo.earendel.se', 'https://listdemo.earendel.se']
 
 app.use(function(req, res, next) {
   var origin = req.headers.origin
